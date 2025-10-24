@@ -33,7 +33,7 @@ investingApp/
 docker-compose up -d
 ```
 
-- MongoDB: http://localhost:27017
+- MongoDB: http://localhost:27018
 - Mongo Express: http://localhost:8081 (admin/admin)
 
 ### 2. 백엔드 실행
@@ -44,10 +44,10 @@ python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8001
 ```
 
-백엔드 API: http://localhost:8000
+백엔드 API: http://localhost:8001
 
 ### 3. 프론트엔드 실행
 
@@ -58,21 +58,22 @@ cp .env.example .env
 npm start
 ```
 
-프론트엔드: http://localhost:3000
+프론트엔드: http://localhost:3001
 
 ## 환경 변수
 
 ### 백엔드 (.env)
 ```
-MONGODB_URL=mongodb://admin:password123@localhost:27017
+MONGODB_URL=mongodb://admin:password123@localhost:27018
 MONGODB_DB_NAME=investingapp
 API_HOST=0.0.0.0
-API_PORT=8000
+API_PORT=8001
 ```
 
 ### 프론트엔드 (.env)
 ```
-REACT_APP_API_URL=http://localhost:8000
+REACT_APP_API_URL=http://localhost:8001
+PORT=3001
 ```
 
 ## 개발 명령어
@@ -80,7 +81,7 @@ REACT_APP_API_URL=http://localhost:8000
 ### 백엔드
 ```bash
 # 개발 서버 실행
-uvicorn main:app --reload
+uvicorn backend.main:app --reload
 
 # 의존성 설치
 pip install -r requirements.txt
