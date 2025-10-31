@@ -1,40 +1,41 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo:7.0
-    container_name: investingapp-mongodb
+  mariadb:
+    image: mariadb:11.2
+    container_name: investingapp-mariadb
     restart: unless-stopped
     ports:
-      - "27018:27017"
+      - "3307:3306"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password123
-      MONGO_INITDB_DATABASE: investingapp
+      MARIADB_ROOT_PASSWORD: rootpassword123
+      MARIADB_DATABASE: investingapp
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: password123
     volumes:
-      - mongodb_data:/data/db
+      - mariadb_data:/var/lib/mysql
     networks:
       - investingapp-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-  mongo-express:
-    image: mongo-express:latest
-    container_name: investingapp-mongo-express
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: investingapp-phpmyadmin
     restart: unless-stopped
     ports:
-      - "8081:8081"
+      - "8081:80"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password123
-      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongodb:27017/
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword123
     depends_on:
-      - mongodb
+      - mariadb
     networks:
       - investingapp-network
 
 volumes:
-  mongodb_data:
+  mariadb_data:
 
 networks:
   investingapp-network:
